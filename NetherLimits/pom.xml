@@ -2,32 +2,45 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>me.uncovery</groupId>
+    <name>NetherLimits</name>
     <artifactId>NetherLimits</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
     </properties>
     <build>
       <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
     </build>
+    <repositories>
+        <repository>
+            <id>papermc</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>        
+        <repository>
+          <id>essentialsx-releases</id>
+          <name>EssentialsX API Repository</name>
+          <url>https://repo.essentialsx.net/releases</url>
+        </repository>
+        <repository>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.2-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/spigot-api-1.16.2-R0.1-SNAPSHOT.jar</systemPath>
-        </dependency>
+            <version>1.21.4-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>        
         <dependency>
-            <groupId>net.ess3.EssentialsXParent</groupId>
+            <groupId>net.essentialsx</groupId>
             <artifactId>EssentialsX</artifactId>
-            <version>2.18.1</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/EssentialsX-2.18.1.13.jar</systemPath>
+            <version>2.20.1</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
-    <name>NetherLimits</name>
 </project>
