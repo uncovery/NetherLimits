@@ -1,0 +1,3 @@
+# If you have EssentialsX, set this to a warp point
+# alternatively, Set to false try to find a free spot below the nether ceiling
+targetWarp: false

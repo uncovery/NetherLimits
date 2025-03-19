@@ -28,8 +28,7 @@ public class NetherLimits extends JavaPlugin implements Listener {
     
     @Override
     public void onEnable() {
-        // config file management
-        
+       
         this.saveDefaultConfig();
         config = this.getConfig(); 
         targetWarp = config.getString("targetWarp");
@@ -58,6 +57,7 @@ public class NetherLimits extends JavaPlugin implements Listener {
         // Check if the player is in the Nether and above Y = 125
         if (playerLocation.getWorld().getEnvironment().equals(NETHER) && playerLocation.getY() > 125) {
             player.sendMessage(ChatColor.RED + "You were detected on the nether roof, relocating you...");
+            getLogger().log(Level.WARNING, "Player {0} was found on the nether roof, locating them!", player.getDisplayName());
 
             if (useWarp) {
                 try {
@@ -68,7 +68,12 @@ public class NetherLimits extends JavaPlugin implements Listener {
                     getLogger().log(Level.SEVERE, "Tried to teleport player to warp point {0} but failed. Check if warp point exists!", targetWarp);
                 }
             } else {
-                player.teleport(findLocation(player.getLocation(), player));
+                Location newLocation = findLocation(player.getLocation(), player);
+                player.teleport(newLocation);
+                getLogger().log(Level.WARNING, "Player {0}  was was relocated from location ({1}-{2}-{3}) to ({4}-{5}-{6})", 
+                        new Object[]{player.getDisplayName(), playerLocation.getX(), playerLocation.getY(), playerLocation.getZ(), newLocation.getX(), newLocation.getY(), newLocation.getZ()});
+                player.sendMessage("You have been warped to a nearby safe location. In case you were hurt during this process, please contact the admin.");
+ 
             }
         }
     }
@@ -85,18 +90,30 @@ public class NetherLimits extends JavaPlugin implements Listener {
         }
     }    
     
-    public static Location findLocation(Location currentLocation, Player player) {
+    public Location findLocation(Location currentLocation, Player player) {
         Location newLocation = currentLocation;
-        while (!isSafeLocation(newLocation) || newLocation.getY() > 127.0D) {
-            for (Double Y=126.0D; Y>1; Y++) {
+        Boolean hasSafeLocation = false;
+        while (!hasSafeLocation) {
+            for (Double Y=126.0D; Y>1; Y--) {
                 // let's move the user 1 block down and check if it's a good location
-                player.sendMessage(ChatColor.RED + "Lowering you to block height " + Y.toString());
                 newLocation.setY(Y);
+                hasSafeLocation = isSafeLocation(newLocation, player);
+                // getLogger().log(Level.WARNING, "Trying Y-level {0}", Y);
+                // the following should not be needed since the while loop should break
+                // as soon as hasSafeLocation is true;
+                if (hasSafeLocation) {
+                    return newLocation;
+                }
             }
             // once we iterated to the bottom, move back up, add one value to X and restart
-            player.sendMessage(ChatColor.RED + "Moving your X by one block");
-            Double currentZ = newLocation.getZ();
-            newLocation.setZ(currentZ++);
+            Double currentX = newLocation.getX();
+            newLocation.setX(currentX + 1);
+            Double currentY = newLocation.getY();
+            newLocation.setY(currentY + 1);            
+            // start from the top again
+            newLocation.setY(127);
+            getLogger().log(Level.WARNING, "Could not find valid Y for player {0}, shifting X from ({1}-{2}-{3}) to ({4}-{5}-{6})", 
+                    new Object[]{player.getDisplayName(), currentLocation.getX(), currentLocation.getY(), currentLocation.getZ(), newLocation.getX(), newLocation.getY(), newLocation.getZ()});             
         }
         return newLocation;
     }
@@ -108,19 +125,28 @@ public class NetherLimits extends JavaPlugin implements Listener {
      * @param location Location to check
      * @return True if location is safe
      */
-    public static boolean isSafeLocation(Location location) {
+    public boolean isSafeLocation(Location location, Player player) {
         Block feet = location.getBlock();
-        if (feet.getType().isAir() && feet.getLocation().add(0, 1, 0).getBlock().getType().isAir()) {
-            return false; // not transparent (will suffocate)
+        if (!feet.getType().isAir()) {
+            //getLogger().log(Level.INFO, "Feet not in air");
+            return false; 
         }
+        //getLogger().log(Level.INFO, "Valid feet location found");
+        
         Block head = feet.getRelative(BlockFace.UP);
-        if (head.getType().isAir()) {
-            return false; // not transparent (will suffocate)
+        if (!head.getType().isAir()) {
+            //player.sendMessage("Head not in air");
+            return false;
         }
+        //getLogger().log(Level.INFO, "Valid head location found");
+        
         Block ground = feet.getRelative(BlockFace.DOWN);
         if (!ground.getType().isSolid()) {
+            //player.sendMessage("Ground not solid");
             return false; // not solid
         }
+        //getLogger().log(Level.INFO, "Valid ground location found");
+        
         return true;
     }    
 }

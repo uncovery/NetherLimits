@@ -1,0 +1,6 @@
+name: NetherLimits
+main: me.uncovery.netherlimits.NetherLimits
+version: 1.1
+api-version: 1.21.4
+description: Plug-in to prevent people from getting on top of the nether roof.
+author: uncovery
