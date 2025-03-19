@@ -1,6 +1,0 @@
-name: NetherLimits
-main: me.uncovery.netherlimits.NetherLimits
-version: 1.0
-api-version: 1.21.4
-depend:
-    - Essentials
