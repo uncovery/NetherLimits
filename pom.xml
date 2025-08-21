@@ -6,9 +6,8 @@
     <version>1.1</version>
     <packaging>jar</packaging>
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.release>21</maven.compiler.release>
     </properties>
     <repositories>
         <repository>
@@ -16,9 +15,8 @@
             <url>https://repo.papermc.io/repository/maven-public/</url>
         </repository>        
         <repository>
-          <id>essentialsx-releases</id>
-          <name>EssentialsX API Repository</name>
-          <url>https://repo.essentialsx.net/releases</url>
+            <id>essentials-releases</id>
+            <url>https://repo.essentialsx.net/releases/</url>
         </repository>
         <repository>
             <id>spigot-repo</id>
@@ -29,14 +27,13 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.21.4-R0.1-SNAPSHOT</version>
+            <version>1.21.8-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>        
         <dependency>
-            <groupId>net.essentialsx</groupId>
-            <artifactId>EssentialsX</artifactId>
-            <version>2.20.1</version>
-            <scope>provided</scope>
+          <groupId>net.essentialsx</groupId>
+          <artifactId>EssentialsX</artifactId>
+          <version>2.21.2</version>
         </dependency>
     </dependencies>
 </project>

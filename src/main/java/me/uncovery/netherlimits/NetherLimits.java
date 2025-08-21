@@ -1,9 +1,9 @@
 package me.uncovery.netherlimits;
 
+import java.util.concurrent.CompletableFuture;
+import com.earth2me.essentials.api.IAsyncTeleport;
 import com.earth2me.essentials.IEssentials;
 import net.ess3.api.IUser;
-import com.earth2me.essentials.api.IAsyncTeleport;
-import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -20,7 +20,6 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class NetherLimits extends JavaPlugin implements Listener {
-
     static IEssentials essentials;
     static FileConfiguration config;
     static Boolean useWarp;
